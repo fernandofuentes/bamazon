@@ -101,7 +101,7 @@ function display() {
             if (answer.restart === true) {
               display();
             } else {
-              console.log("Thanks for shopping with us at Bamazon!");
+              console.log("Thanks for shopping with us!");
             }
           });
         } else {
