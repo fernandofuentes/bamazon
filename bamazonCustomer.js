@@ -1,51 +1,58 @@
-// REQUIRED MODULES
-var mysql = require('mysql');
+//global variables
+var mysql = require("mysql");
 var inquirer = require("inquirer");
 var express = require("express");
 
-// VARIABLES
 var item;
 var price;
-var itemId;
+var id;
+var department_name;
 var stockQuantity;
-var quantityChosen;
-var total = (price * quantityChosen);
+var chosenQuantity;
+var total = (price * chosenQuantity);
 
-// CONNECT TO SERVER / MYSQL
-var connection = mysql.createConnection({
+
+// MYSQL Login
+
+var connectObject = {
+  host: "localhost",
   port: 3306,
-  host: 'localhost',
-  user: 'root',
-  password: 'mysqlpw!',
-  database: 'bamazonDB2'
-});
+  user: "root",
+  password: "mysqlpw!",
+  database: "bamazonDB2"
+};
 
-// Connection Approved or disapproved
-connection.connect(function(err) {
-  if (err) {
-    console.error("error connecting: " + err.stack);
-    return;
+var connection = mysql.createConnection(connectObject);
+
+connection.connect(function(error) {
+  if (error) {
+    throw error;
   }
-  console.log("connected as id: " + connection.threadId);
+  display();
 });
 
-
-// Display all items in Bamazon
+// A function to disply all products in Bamazon
 function display() {
 
-  connection.query("SELECT item_id, product_name, price, stock_quantity FROM products", function(err, results) {
-    if (err) throw err;
+  connection.query("SELECT item_id, product_name, department_name, price, stock_quantity FROM products", function(error, results) {
+    if (error) throw error;
+    // Display Welcome Messages to the Buyer
+    console.log("==============================================");
+    console.log("WELCOME TO BANANZA! SPEND ALL YOUR MONEY HERE!");
+    console.log("==============================================");
 
+    // forLoop for all PRODUCTS
     for (var i = 0; i < results.length; i++) {
-      itemId = results[i].item_id;
+      id = results[i].item_id;
       item = results[i].product_name;
+      department_name = results[i].department_name;
       price = results[i].price;
       stockQuantity = results[i].stock_quantity;
 
-      console.log("id:" + itemId + ",", item, "$" + price, "in stock: " + stockQuantity);
+      console.log("ID #: " + id + ", " + item + ", " + "Department: " + department_name + ", " + "$" + price + ", " + "# In Stock: " + stockQuantity);
     }
-
-    // Prompt "What is the ID of the product you would like to buy?"
+    console.log(" ")
+    // once you have the items, prompt the user for which they'd like to buy
     inquirer.prompt([{
       name: "item_choice",
       type: "input",
@@ -68,10 +75,11 @@ function display() {
       }
 
       var currentId = answer.item_choice;
-
+      console.log("====================");
       console.log(item);
-      console.log("# in Stock:", stockQuantity);
-      console.log("price:", price);
+      console.log("# IN STOCK: " + stockQuantity);
+      console.log("PRICE: $" + price);
+      console.log("====================");
 
       inquirer.prompt([{
         name: "quantity_choice",
@@ -88,24 +96,29 @@ function display() {
         chosenQuantity = parseInt(answer.quantity_choice);
 
         if (chosenQuantity > stockQuantity) {
-          console.log("Insufficient quantity!");
-          console.log("id:" + itemId + ",", item, "$" + price, "in stock: " + stockQuantity);
+          console.log("SORRY! We don't have enough in stock");
+          console.log("id:" + id + ",", item, "$" + price, "in stock: " + stockQuantity);
 
           inquirer.prompt([{
             name: "restart",
             type: "confirm",
-            message: "Would you like to begin again?",
+            message: "Would you like to continue shopping?",
             default: "yes"
           }]).then(function(answer) {
             if (answer.restart === true) {
               display();
             } else {
-              console.log("Thanks for shopping with us!");
+              console.log("=======================================");
+              console.log("Thankyou for shopping with us!");
+              console.log("=======================================");
             }
           });
         } else {
-          console.log('yep, we got enough!');
+          console.log('Perfect!, We have plenty in stock!');
 
+
+          // SUBTRACT QUANTITY FROM THE STOCK,
+          // ADD THE TOTAL
           updateQuantity(stockQuantity - chosenQuantity, currentId);
 
           total = (price * chosenQuantity);
@@ -115,29 +128,29 @@ function display() {
           inquirer.prompt([{
             name: "restart",
             type: "confirm",
-            message: "Would you like to begin again?",
+            message: "Would you like to continue shopping?",
             default: "yes"
           }]).then(function(answer) {
             if (answer.restart === true) {
               display();
             } else {
-              console.log("Thanks for shopping!");
+              console.log("Have a wonderful day!");
             }
           });
         }
       });
     });
   });
-}
+};
 
-//update function
-function updateQuantity(quantity, itemId) {
+// UPDATE QUANTITY FUNCTION
+function updateQuantity(quantity, id) {
 
-  connection.query("UPDATE products SET ? WHERE ?", [{
+  connection.query("UPDATE PRODUCTS", [{
     "stock_quantity": quantity
   }, {
-    "item_id": itemId
-  }], function(err, results) {
-    if (err) throw err;
+    "item_id": id
+  }], function(error, results) {
+    if (error) throw error;
   });
 };
