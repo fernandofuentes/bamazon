@@ -51,8 +51,10 @@ function display() {
 
       console.log("ID #: " + id + ", " + item + ", " + "Department: " + department_name + ", " + "$" + price + ", " + "# In Stock: " + stockQuantity);
     }
+    // Space ....
     console.log(" ")
-    // once you have the items, prompt the user for which they'd like to buy
+
+    // What is the ID of the product you would like to buy?
     inquirer.prompt([{
       name: "item_choice",
       type: "input",
@@ -78,7 +80,7 @@ function display() {
       console.log("====================");
       console.log(item);
       console.log("# IN STOCK: " + stockQuantity);
-      console.log("PRICE: $" + price);
+      console.log("PRICE: $" + price + " each");
       console.log("====================");
 
       inquirer.prompt([{
@@ -97,7 +99,7 @@ function display() {
 
         if (chosenQuantity > stockQuantity) {
           console.log("SORRY! We don't have enough in stock");
-          console.log("id:" + id + ",", item, "$" + price, "in stock: " + stockQuantity);
+          console.log("id:" + id + "," + item + "$" + price + "in stock: " + stockQuantity);
 
           inquirer.prompt([{
             name: "restart",
@@ -105,7 +107,7 @@ function display() {
             message: "Would you like to continue shopping?",
             default: "yes"
           }]).then(function(answer) {
-            if (answer.restart === Y) {
+            if (answer.restart === true) {
               display();
             } else {
               console.log("=======================================");
@@ -114,11 +116,8 @@ function display() {
             }
           });
         } else {
-          console.log('Perfect!, We have plenty in stock!');
-
-
-          // SUBTRACT QUANTITY FROM THE STOCK,
-          // ADD THE TOTAL
+          // SUBTRACT QUANTITY FROM STOCK
+          // ADD UP THE TOTAL
           updateQuantity(stockQuantity - chosenQuantity, currentId);
 
           total = (price * chosenQuantity);
@@ -134,23 +133,25 @@ function display() {
             if (answer.restart === true) {
               display();
             } else {
-              console.log("Have a wonderful day!");
+              console.log("===============================");
+              console.log("Thank you for shopping with us!");
+              console.log("===============================");
             }
           });
         }
       });
     });
   });
-};
+} // end display function
 
-// UPDATE QUANTITY FUNCTION
+//update function
 function updateQuantity(quantity, id) {
 
-  connection.query("UPDATE PRODUCTS", [{
+  connection.query("UPDATE products SET ? WHERE ?", [{
     "stock_quantity": quantity
   }, {
     "item_id": id
-  }], function(error, results) {
-    if (error) throw error;
+  }], function(err, results) {
+    if (err) throw err;
   });
-};
+} //end update function
