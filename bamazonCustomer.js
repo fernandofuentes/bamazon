@@ -89,7 +89,7 @@ function display() {
         chosenQuantity = parseInt(answer.quantity_choice);
 
         if (chosenQuantity > stockQuantity) {
-          console.log("oops, not enough in stock.");
+          console.log("Insufficient quantity!");
           console.log("id:" + id + ",", item, "$" + price, "in stock: " + stockQuantity);
 
           inquirer.prompt([{
