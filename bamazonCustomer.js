@@ -17,7 +17,7 @@ var connection = mysql.createConnection({
   host: 'localhost',
   user: 'root',
   password: 'mysqlpw!',
-  database: 'bamazonDB'
+  database: 'bamazonDB2'
 });
 
 // Connection Approved or disapproved
@@ -30,7 +30,7 @@ connection.connect(function(err) {
 });
 
 
-//function to display all items in store
+// Display all items in Bamazon
 function display() {
 
   connection.query("SELECT item_id, product_name, price, stock_quantity FROM products", function(err, results) {
