@@ -12,18 +12,30 @@ var total = (price * quantityChosen);
 
 // CONNECT TO SERVER / MYSQL
 var connection = mysql.createConnection({
-  port: 3000,
+  port: 3306,
   host: 'localhost',
   user: 'root',
-  password: 'ugcNHrgm4Y.r',
-  database: 'bamazon'
+  password: 'mysqlpw!',
+  database: 'bamazonDB'
 });
 
-connection.connect();
+// Connection Approved or disapproved
+connection.connect(function(err) {
+  if (err) {
+    console.error("error connecting: " + err.stack);
+    return;
+  }
+  console.log("connected as id " + connection.threadId);
+});
 
 connection.query('SELECT 1 + 1 AS solution', function(error, results, fields) {
-  if (error) throw error;
-  console.log('The solution is: ', results[0].solution);
+
 });
 
-connection.end();
+
+
+
+
+
+
+// connection.end();
