@@ -45,7 +45,7 @@ function display() {
       console.log("id:" + id + ",", item, "$" + price, "in stock: " + stockQuantity);
     }
 
-    // once you have the items, prompt the user for which they'd like to buy
+    // Prompt "What is the ID of the product you would like to buy?"
     inquirer.prompt([{
       name: "item_choice",
       type: "input",
@@ -57,7 +57,6 @@ function display() {
         return false;
       }
     }]).then(function(answer) {
-      // console.log(answer);
 
       for (var i = 0; i < results.length; i++) {
 
@@ -106,7 +105,6 @@ function display() {
           });
         } else {
           console.log('yep, we got enough!');
-
 
           updateQuantity(stockQuantity - chosenQuantity, currentId);
 
