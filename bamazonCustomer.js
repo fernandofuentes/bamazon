@@ -38,7 +38,7 @@ function display() {
     if (error) throw error;
     // Display Welcome Messages to the Buyer
     console.log("==============================================");
-    console.log("WELCOME TO BANANZA! SPEND ALL YOUR MONEY HERE!");
+    console.log("WELCOME TO BAMAZON! SPEND ALL YOUR MONEY HERE!");
     console.log("==============================================");
 
     // forLoop for all PRODUCTS
