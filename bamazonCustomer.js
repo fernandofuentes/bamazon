@@ -26,7 +26,7 @@ connection.connect(function(err) {
     console.error("error connecting: " + err.stack);
     return;
   }
-  console.log("connected as id " + connection.threadId);
+  console.log("connected as id: " + connection.threadId);
 });
 
 
@@ -37,12 +37,12 @@ function display() {
     if (err) throw err;
 
     for (var i = 0; i < results.length; i++) {
-      id = results[i].item_id;
+      itemId = results[i].item_id;
       item = results[i].product_name;
       price = results[i].price;
       stockQuantity = results[i].stock_quantity;
 
-      console.log("id:" + id + ",", item, "$" + price, "in stock: " + stockQuantity);
+      console.log("id:" + itemId + ",", item, "$" + price, "in stock: " + stockQuantity);
     }
 
     // Prompt "What is the ID of the product you would like to buy?"
@@ -89,7 +89,7 @@ function display() {
 
         if (chosenQuantity > stockQuantity) {
           console.log("Insufficient quantity!");
-          console.log("id:" + id + ",", item, "$" + price, "in stock: " + stockQuantity);
+          console.log("id:" + itemId + ",", item, "$" + price, "in stock: " + stockQuantity);
 
           inquirer.prompt([{
             name: "restart",
@@ -131,12 +131,12 @@ function display() {
 }
 
 //update function
-function updateQuantity(quantity, id) {
+function updateQuantity(quantity, itemId) {
 
   connection.query("UPDATE products SET ? WHERE ?", [{
     "stock_quantity": quantity
   }, {
-    "item_id": id
+    "item_id": itemId
   }], function(err, results) {
     if (err) throw err;
   });
