@@ -105,7 +105,7 @@ function display() {
             message: "Would you like to continue shopping?",
             default: "yes"
           }]).then(function(answer) {
-            if (answer.restart === true) {
+            if (answer.restart === Y) {
               display();
             } else {
               console.log("=======================================");
