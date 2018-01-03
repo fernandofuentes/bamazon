@@ -49,7 +49,7 @@ function display() {
     inquirer.prompt([{
       name: "item_choice",
       type: "input",
-      message: "What item would you like to buy?",
+      message: "What is the ID of the product you would like to buy?",
       validate: function(value) {
         if (isNaN(value) === false) {
           return true;
@@ -77,7 +77,7 @@ function display() {
       inquirer.prompt([{
         name: "quantity_choice",
         type: "input",
-        message: "How many would you like to buy?",
+        message: "How many units of the product would you like to buy?",
         validate: function(value) {
           if (isNaN(value) === false) {
             return true;
