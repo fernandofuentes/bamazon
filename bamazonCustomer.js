@@ -12,7 +12,7 @@ var total = (price * quantityChosen);
 
 // CONNECT TO SERVER / MYSQL
 var connection = mysql.createConnection({
-  port: "3000"
+  port: 3000,
   host: 'localhost',
   user: 'root',
   password: 'ugcNHrgm4Y.r',
